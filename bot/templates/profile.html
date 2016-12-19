@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+IRECIPE-User profile
+{% endblock %} 
+
+{% block content %}
+
+
+<div class = "container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-md-2 col-xs-0"></div>
+        <div class="col-md-8 col-xs-12">
+            <div class="well">
+                <h3>유저 정보</h3>
+                <p>아이디 : {{cuser.user}}</p>
+                <p>이름 : {{cuser.name}}</p>
+                {% if cuser.diet == True %}
+                    <p>다이어트 유무 : O</p>
+                {% else %}
+                    <p>다이어트 유무 : X</p>
+                {% endif %}
+                <p>못먹는음식 : {{cuser.hate}}</p>
+                <br>
+            </div>
+            <h3>추천 내역</h3>
+            <ul class="collapsible" data-collapsible="accordion">
+                      <li>
+                        <div class="collapsible-header"><span class="badge">10</span><i class="material-icons">filter_drama</i>만족</div>
+                        {% for positive in positives %}
+                        <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{positive.recipe.get_absolute_url}}">{{positive.recipe}}</a></p></div>
+                        {% endfor %}
+                      </li>
+                      <li>
+                        <div class="collapsible-header"><span class="badge">10</span><i class="material-icons">place</i>불만족</div>
+                        {% for negative in negatives %}
+                        <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{negative.recipe.get_absolute_url}}">{{negative.recipe}}</a></p></div>
+                        {% endfor %}
+                      </li>
+                      <li>
+                        <div class="collapsible-header"><span class="new badge" data-badge-caption="need feedback">{{lennone}}</span><i class="material-icons">filter_drama</i>피드백해주세요!</div>
+                        {% for nones in noness %}
+                        <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{nones.recipe.get_absolute_url}}">{{nones.recipe}}</a></p>
+                        
+                        
+                        </div>
+                        {% endfor %}
+                      </li>
+                    </ul>
+            
+            
+        </div>
+        <div class="col-md-2 col-xs-12"></div>    
+    </div>
+</div>
+<script src="/static/js/index.js"></script>
+
+{% endblock %}

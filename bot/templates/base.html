@@ -1,0 +1,67 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html >
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{% block title %}{% endblock %}</title>
+      <!-- 부트스트랩 -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="/static/css/normalize.css">
+		<link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+		<link rel='stylesheet prefetch' href='/static/js/jquery.mCustomScrollbar.min.css'>
+		<link rel="stylesheet" href="/static/css/style.css">
+		<script src="/static/js/jquery-latest.js"></script>
+		
+		<!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+		
+	</head>
+
+	<body onload="init()" id="page_body">
+	   <nav class="navbar-fixed">
+      <div class="nav-wrapper white">
+        <a href="/" class="brand-logo center waves-effect waves-block" style="color:black">IRECIPE</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          {% if user.is_authenticated %} <!-- 로그인되어있는 경우에만 로그아웃 버튼 누를 수 있도록~ -->
+                <li class="waves-effect waves-block waves-green"><a style="color:black" href="/profile/">{{cuser}}</a></li>
+              <!--  <li class="waves-effect waves-block waves-red"><a style="color:black" href="/chat/">챗봇</a></li>-->
+                <li class="waves-effect waves-block waves-green"><a style="color:black" href="/accounts/logout">로그아웃</a></li>
+          {% endif %}
+        </ul>
+      </div>
+  </nav>
+
+	   
+    {% block content %}{% endblock %}
+    
+     <footer class="page-footer teal accent-4">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">IRECIPE</h5>
+                <p class="grey-text text-lighten-4">당신의 취향을 저격할 레시피</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2016 Copyright BOAZ
+            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+            </div>
+          </div>
+        </footer>
+	</body>
+</html>

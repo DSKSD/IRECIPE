@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+IRECIPE-Recipe detail
+{% endblock %} 
+
+
+{% block content %}
+
+
+
+
+<div class = "container" style="margin-top: 100px;">
+    <div class="row">
+ 
+        <div class="col-md-2 col-xs-0"></div>
+        <div class="col-md-3 col-xs-12">
+            <img class="responsive-img" src="{{recipe.imagepath}}" />
+            <div style="margin-top:20px;">
+                <h6>이와 비슷한 레시피</h6>
+                {% for similar in similars %}
+                    <p><a style="color:#00bfa5;" href="{{similar.get_absolute_url}}">{{similar.name}}</a></p>
+                {% endfor %}
+            </div>
+        </div>
+        <div style="margin-left: 25px;" class="col-md-4 col-xs-12">
+            <p><h5>{{recipe.name}}</h5></p>
+            <p>주재료 : {{recipe.primary}}</p>
+            <p>부재료 : {{recipe.sub}}</p>
+            <p>난이도 : {{recipe.difficulty}}</p>
+            <p style="margin-top: 20px;">{{recipe.text}}</p>
+        </div>    
+    </div>
+</div>
+
+
+
+{% endblock %}

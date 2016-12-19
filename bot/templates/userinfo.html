@@ -1,0 +1,63 @@
+{% extends "base.html"%} 
+
+{% block title %}
+IRECIPE-User information
+{% endblock %} 
+
+{% block content %}
+<div class = "container"  style="margin-top: 100px;">
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+         <div class="well well-lg">
+            <div class="center">
+             <h2>추가 정보 입력</h2>  
+            </div>
+            
+            <form style="margin-top: 50px;" action="{% url 'userinform' %}" method="POST">{% csrf_token %}
+            
+            <div class="input-field">
+              <label for="id_name">이름</label>
+              <input type ="text" id="id_name" name="name" placeholder="이름을 입력하세요." required>
+            </div>
+            <div class="input-field">
+              <label for="id_hate">못 먹는 음식</label>
+              <input  type ="text" id="id_hate" name="hate" placeholder="ex. 오이, 땅콩">
+            </div>
+            <p>
+              <input type="checkbox" id="test5" name="diet" />
+              <label for="test5">다이어트 유무</label>
+            </p>
+            
+            <p><h5 style="color:gray;">당신의 평소 입맛은?</h5></p>
+
+            <div style ="margin-top:20px;" class="input-field col s12">
+              <select name="taste">
+                <option value="" disabled selected>태그를 선택해주세요</option>
+                <option value="1">매콤한</option>
+                <option value="2">달달한</option>
+                <option value="3">짭짤한</option>
+                <option value="4">새콤한</option>
+                <option value="5">고소한</option>
+              </select>
+              <label>Taste 태그</label>
+            </div>
+
+            
+            
+              <button style=";" type="submit" class="btn btn-success teal accent-4">채팅시작</button>
+           </form>
+            
+      </div>
+      </div>
+      <div class="col-md-2"></div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('select').material_select();
+  });
+</script>
+
+ {% endblock %}

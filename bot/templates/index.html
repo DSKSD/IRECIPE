@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="parallax-container">
+    <div class="parallax"><img src="/static/res/bg-header.jpg" />
+    </div>
+</div>
+
+    <div class="section white">
+        <div class="row container">
+            <h2 class="header">저기.. 이거 어때요?</h2>
+            <p class="grey-text text-darken-3 lighten-3">
+                저는 국내 최초 빅데이터 연합 동아리 보아즈에서 만들어진 IRECIPEBOT입니다:)
+                원하는 재료, 느낌을 알려주시면 당신 입맛에 딱 알맞는 레시피를 추천해드려요! 
+            </p>
+        </div>
+    </div>
+            
+    <div class = "container">
+        <div class="row">
+        <div class="col-md-3 col-xs-0"></div>
+        <div class="col-md-6 col-xs-12">
+            {% if user.is_authenticated %}
+            <button style="margin-left: 180px; width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'chat' %}">채팅시작</a></button>
+            {% else %}
+            <button style="margin-left: 80px; width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'loginForm' %}">로그인</a></button>
+            <button style="width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'register' %}">회원가입</a></button>
+            {% endif %}
+        </div>
+        <div class="col-md-3 col-xs-0"></div>
+        </div>
+    </div>
+
+<script>
+    $(document).ready(function(){
+      $('.parallax').parallax();
+    });
+    
+</script>
+
+{% endblock %}

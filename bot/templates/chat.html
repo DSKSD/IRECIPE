@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}
+IRECIPEBOT
+{% endblock %}
+
+{% block content %}
+
+<style>
+	body {
+		  background: -webkit-linear-gradient(315deg, #044f48, #2a7561);
+		  background: linear-gradient(135deg, #044f48, #2a7561);
+		  background-size: cover;
+		  font-family: 'Open Sans', sans-serif;
+		  font-size: 12px;
+		  line-height: 1.3;
+		  overflow: hidden;
+	}
+</style>
+
+<div class="chat">
+<div class="chat-title">
+	<h1>IRECIPEBOT</h1>
+	<h2>Ask Me Anything</h2>
+	<figure class="avatar">
+		<img src="/static/res/botprofile.png" /></figure>
+</div>
+<div class="messages">
+	<div class="messages-content"></div>
+</div>
+<div class="message-box">
+	<textarea type="text" class="message-input" placeholder="Type message..."></textarea>
+	<button type="submit" class="message-submit">Send</button>
+</div>
+
+</div>
+<div class="bg"></div>
+		<script src='/static/js/jquery.min.js'></script>
+<script src='/static/js/jquery.mCustomScrollbar.concat.min.js'></script>
+
+				<script src="/static/js/index.js"></script>
+
+{% endblock %}
