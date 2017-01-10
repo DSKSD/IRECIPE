@@ -16,13 +16,16 @@ from django.db.models import Q
 f = open("./bot/data/exceptRecipe.txt", 'rb')
 exceptRecipe = pickle.load(f)
 
+f = open("./bot/data/ingdict.txt", 'rb')
+ingredient = pickle.load(f)
+
 # f = open("./bot/data/recom_log.txt", 'rb')
 # recom_log = pickle.load(f)
 
 # hyperparameters
 H = 400 # number of hidden layer neurons
 #batch_size = 10 # every how many episodes to do a param update?
-learning_rate = 1e-3
+learning_rate = 1e-4
 # gamma = 0.99 # discount factor for reward
 # decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
 
@@ -37,14 +40,25 @@ learning_rate = 1e-3
 #         return self.name
         
 
-def Search(ingList, user):
+def Search(ingList, user,userSay="",rfilter=None):
     """가지고 있는 재료와 매치되는 정도(float)와 레시피의 pk 반환"""
     result = []
+    
+    
+    hate = []
+    
+    if ',' in user.hate:
+        hate = user.hate.split(',')
+    else:
+        hate = [user.hate]
+    
+    
     if type(ingList) != list:
         
         if ingList == "RANDOM": # 작정한 랜덤?
             for _ in range(1000):
                 result.append(random.choice(range(1,11607)))
+                
 
         else:
             objects = Recipe.objects.filter(Q(name__icontains=ingList) | Q(primary__icontains=ingList) | Q(sub__icontains=ingList) | Q(text__icontains=ingList))
@@ -56,8 +70,25 @@ def Search(ingList, user):
                 for _ in range(10):
                     result.append(random.choice(range(1,11607)))
 
-            print(result)
+
     else: # 재료 리스트로 인풋 들어올 때 처리 
+    
+        if ingList[0] == "SUBSTITUE": # 그거 말고 다른거 등..
+            
+            for r in rfilter:
+                if r in ingredient:
+                    hate.append(r)
+        
+            randing = random.choice(ingredient)
+            
+            if userSay in ingredient:
+                ingList = [userSay]
+            else:
+                ingList = [randing]
+            
+            print(ingList)
+            print(hate)
+        
         number = len(ingList)
         recipe = Recipe.objects.all()
         for i in range(len(recipe)):
@@ -81,17 +112,14 @@ def Search(ingList, user):
             
             if matching == 0.0: continue
                 
-         #   if (user.diet == True) & (recipe[i].kcal >= 300): continue # 다이어트 유무에 따라 칼로리 필터링
+            if (user.diet == True) and (recipe[i].kcal >= 300): continue # 다이어트 유무에 따라 칼로리 필터링
                 
             matching = float(matching)/float(number)
             
             if matching > 0.6:
-                if ',' in user.hate:
-                    hate = user.hate.split(',')
-                else:
-                    hate = [user.hate]
+
                     
-                if len(user.hate)!=0: # 싫어하는 음식 필터링
+                if len(hate)!=0: # 싫어하는 음식 필터링
                     for check in hate:
                         hateCheck1 = re.search(check, recipe[i].primary)
                         hateCheck2 = re.search(check, recipe[i].sub)
@@ -134,9 +162,9 @@ def sigmoid(x):
 def forward(x,model):
     # 2 layer의 NN
     # Output layer는 sigmoid(binary)
-    h = np.dot(model['W1'],x)+model['b1']
+    h = np.dot(model['W1'],x)+1.0
     h[h<0] = 0 # ReLU nonlinearity
-    logp = np.dot(model['W2'], h)+model['b2']
+    logp = np.dot(model['W2'], h)+1.0
     p = sigmoid(logp)
     return p, h 
 
@@ -170,9 +198,7 @@ def Feedback(log, actual):
     """챗봇 UI 상에서 만족/불만족, 별점을 주면 이 함수를 호출한다
        update가 True이면 로그를 업데이트하면서 바로 모델 업데이트까지 해버린다.
     """
-    if actual == 0:
-        learning_rate = 1e-2
-    
+
     myLog = get_object_or_404(RecomLog, pk=log)
     myLog.actual = actual
     myLog.save()

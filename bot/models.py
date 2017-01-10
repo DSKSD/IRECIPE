@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import json
 import pickle
+from django.utils import timezone
 # Create your models here.
 
 class Userinfo(models.Model):
@@ -10,7 +11,8 @@ class Userinfo(models.Model):
     prefer = models.BinaryField(null=True)
     diet = models.BooleanField(default=False)
     hate = models.CharField(max_length=300, null=True)
-
+    mclass = models.IntegerField(null=True)
+    
     def setPrefer(self, x):
         self.prefer = pickle.dumps(x,0)
 
@@ -63,6 +65,7 @@ class RecomLog(models.Model):
     recipe = models.ForeignKey(Recipe)
     aprob = models.FloatField(default=0.0)
     actual = models.IntegerField(null=True)
+
     
     def setHidden(self,x):
         self.hidden = pickle.dumps(x,0)
@@ -73,3 +76,11 @@ class RecomLog(models.Model):
         
     def __str__(self):
         return self.recipe
+        
+class Dialog(models.Model):
+    user = models.ForeignKey('auth.User')
+    sent = models.TextField(null=False)
+    created_date = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.user

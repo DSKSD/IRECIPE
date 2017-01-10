@@ -40,7 +40,7 @@ def intentClassifier(sentence):
     
     이곳엔 RNN Classifier를 한번 적용해보도록 합시다. 연습용 데이터 다수 생성 필요!!
     """
-    intent=0
+    intent=0 # 0 음식 추천 1 인사 2 이스터에그 3 유도 4 랜덤 추천 5 대안 추천
     checkIng = []
     
     
@@ -69,12 +69,12 @@ def intentClassifier(sentence):
     
     NEGATIVE = ("바보", "멍청", "멍충", "ㅄ", "닥쳐" ,"ㅅㅂ", "시발", "ㄷㅈㄹ", "뒤질래", "빠가", "ㅡㅡ", "ㅆㅃ",
                 "시벌", "아놔", "디질래", "시바", "시방", "ㄷㅊ", "바부", "으휴", "-_-", "뻐큐", "뻑", "fuck", "별로", "별루", "별론",
-                "에효", "에휴","노노","ㄴㄴ", "ㅗㅗ", "아니","아닌", "말고", "싫", "임마", "인마", "좌식"
+                "에효", "에휴","노노","ㄴㄴ", "ㅗㅗ", "아니","아닌", "싫", "임마", "인마", "좌식"
                 ,"아오","밥팅","밥퉁","바부","답답","장난하", "됐다", "됐어", "에혀", "때려", "자식", "짜식" ,"ㅎㅌㅊ", "하타",
                 "쓋", "씟", "shit", "쒯", "혼날래", "멍추아", "멍처아", "혼난다", "빵꾸똥꾸", "떵꼬", "똥꼬", "아냐", "우씨",
                 "우씌", "짜증나", "짱나", "확 씨", "확씨", "이걸 확", "죽을래", "죽는다", "빡치게", "십새", "새끼", "새키",
                 "아는게 뭐야", "아는게 머야", "아는게뭐야", "아는게머야", "아는게 없어", "아는게없어", "아는겡버서",
-                "맛없어", "맛 없어", "데엄", "젠좡", "젠장", "새캬", "그만", "주글", "혼난")
+                "맛없어", "맛 없어", "데엄", "젠좡", "젠장", "새캬", "그만", "주글", "혼난", "장난치", "최악")
                 
     POSITIVE = ("짱이다","짱이야", "올", "최고", "우와", "고마워", "ㄳ", "땡큐", "천재", "똑똑","감사" , "괜찮", "오호", "오홍", "땅큐", "땅켜",
                 "괜춘", "쩐다", "쩔어", "굿", "굳", "ㅇㅋ", "예쁘다", "이쁘다", "멋있", "멋져", "멋있", "멋지다", "땡쓰","땡스",
@@ -83,13 +83,13 @@ def intentClassifier(sentence):
                 "오키","오케", "대단", "잘해" ,"힘내", "화이팅", "파이팅", "울지망", "뭐가미안","뭐가 미안", "뭐가 죄송",
                 "뭐가죄송","머가 죄송", "머가죄송","머가 미안", "머가미안", "그려", "조아", "죠아", "됴아","땅켜","땡! 켜!", "맘에 들어", "유후", "꺄오",
                 "꺄올", "내 스탈", "내 스타일", "내스탈", "내스타일", "좋았어", "져아", "사랑", "좋지",
-                "맘에 들", "마음에 들", "맘에들", "마음에들", "맘에든", "맘에 든", "마음에 든", "마음에든")
+                "맘에 들", "마음에 들", "맘에들", "마음에들", "맘에든", "맘에 든", "마음에 든", "마음에든", "고맙","고마웡")
     
     NEUTURAL = ("흠", "음", "엥", "킁", "크항", "크앙", "끄항", "끙", "또르르", "쩝", "웃긴다", "웃기네", "웃겨",)
     
     EMOTION = ("ㅠㅠ", "ㅋㅋ", "ㅎㅎ", ";;", "하하", "허허", "헤헤", "헤헿","헿", "핳", "크크","앜", "호호", "히히", "키키")
     
-    SUBSTITUE = ("딴거", "다른거", "이거 말고", "이거말고", )
+    SUBSTITUE = ("딴거", "다른거", "말고", "말구")
     
     for word in words:
         
@@ -134,6 +134,11 @@ def intentClassifier(sentence):
             if pt != None:
                 eastList[2] = pt.group()
                 intent = 2
+                
+        for sb in SUBSTITUE: # 다른거 
+            sbt = re.search(sb, word.lower())
+            if sbt != None:
+                intent = 5
         
         for e in EMOTION:
             et = re.search(e, word.lower())
@@ -143,16 +148,23 @@ def intentClassifier(sentence):
         if word in [ll for ll in ingredient if len(ll)==1]:
             checkIng.append(word)
             #intent=0
-    
+        
+        for pr in ["그거", "이거", "요거", "고거"]:
+            prt = re.search(pr, word.lower())
+            if prt != None:
+                eastList[1] = prt.group()
         
     for i in ingredient: # 요리재료는 따로 한번 더 검사
             if len(i) == 1: continue
             it = re.search(i, sentence.lower())
             if it != None:
                 checkIng.append(it.group())
-                intent = 0    
+                
+                if intent != 5: #의도가 대안 추천일 떄는 의도를 바꾸지 않는다.
+                    intent = 0
     
-            
+    
+    
  
     return intent, checkIng, targetList, eastList
 
@@ -240,13 +252,24 @@ def Recommendation(user, ingList, userSay):
     """
     
     recom_list = []
+    
+     
+   
+    
     if type(ingList) != list:
         
         if ingList =="RANDOM":
             candidates = Search("RANDOM", user)
-        else:
+       
+        elif ingList =="query":
             candidates = Search(userSay, user)
-
+            
+        elif ingList.split(' ')[0] == "hate":
+            hates = ingList.split(' ')[1:]
+            
+            candidates = Search(["SUBSTITUE"],user,userSay,hates)
+            
+            print(candidates)
     else:
         candidates = Search(ingList, user)
 

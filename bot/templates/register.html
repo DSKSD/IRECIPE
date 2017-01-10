@@ -8,11 +8,11 @@ IRECIPE-Register
 
 <div class = "container" style="margin-top: 100px;">
     <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-6">
+      <div class="col s12 m3"></div>
+      <div class="col s12 m6">
           <div class="well well-lg">
             <div class="center">
-               <h2>IRECIPE 유저 등록</h2>
+               <h2>사용자 등록</h2>
             
            <form  style="margin-top: 50px;" action="/accounts/register/" method="POST">{% csrf_token %}
             {% if form.errors %}
@@ -35,7 +35,7 @@ IRECIPE-Register
            </div>
       </div>
       </div>
-      <div class="col-md-3"></div>
+      <div class="col s12 m3"></div>
     </div>
 </div>
 

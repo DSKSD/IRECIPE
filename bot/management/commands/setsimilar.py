@@ -8,7 +8,7 @@ f = open("./bot/data/recipe10000_complete.txt", 'rb')
 recipe = pickle.load(f)
 
 
-f = open("./bot/data/similarVector.txt", 'rb')
+f = open("./bot/data/similarVector2.txt", 'rb')
 similarVec = pickle.load(f)
 
 class Command(BaseCommand):

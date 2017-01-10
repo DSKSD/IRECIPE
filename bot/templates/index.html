@@ -2,41 +2,77 @@
 {% load staticfiles %}
 {% block content %}
 
-<div class="parallax-container">
-    <div class="parallax"><img src="/static/res/bg-header.jpg" />
-    </div>
-</div>
 
-    <div class="section white">
-        <div class="row container">
-            <h2 class="header">저기.. 이거 어때요?</h2>
-            <p class="grey-text text-darken-3 lighten-3">
-                저는 국내 최초 빅데이터 연합 동아리 보아즈에서 만들어진 IRECIPEBOT입니다:)
-                원하는 재료, 느낌을 알려주시면 당신 입맛에 딱 알맞는 레시피를 추천해드려요! 
-            </p>
+
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container" style="margin-top:30px;">
+        <br><br>
+        <h1 class="header center light" style="color:#212121;">저기.. 이거 어때요?</h1>
+        <div class="row center">
+          <h5 class="header col s12 light" style="color:#795548;">
+                원하는 재료, 느낌을 알려주시면 당신 입맛에 딱 알맞는 레시피를 추천해드려요! </h5>
         </div>
+        <div class="row center">
+          {% if user.is_authenticated %}
+          <a  id="download-button" style="text-decoration:none"  class="btn-large waves-effect waves-light teal lighten-1" href="{% url 'chat' %}">Get Started</a>
+          {% else %}
+          <a  id="download-button" style="text-decoration:none"  class="btn-large waves-effect waves-light teal lighten-1" href="{% url 'register' %}">Join Us</a>
+          {% endif %}
+        </div>
+        <br><br>
+
+      </div>
     </div>
-            
-    <div class = "container">
-        <div class="row">
-        <div class="col-md-3 col-xs-0"></div>
-        <div class="col-md-6 col-xs-12">
-            {% if user.is_authenticated %}
-            <button style="margin-left: 180px; width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'chat' %}">채팅시작</a></button>
-            {% else %}
-            <button style="margin-left: 80px; width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'loginForm' %}">로그인</a></button>
-            <button style="width : 200px;" type="button" class="btn btn-success teal accent-4"><a style="color: white; font-size: 30px; " href="{% url 'register' %}">회원가입</a></button>
-            {% endif %}
+    <div class="parallax"><img src="/static/res/bg-header.jpg" alt="Unsplashed background img 1"></div>
+  </div>
+    
+    
+     <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><span class="glyphicon glyphicon-refresh"></span></h2>
+            <h5 class="center">Realtime Interaction</h5>
+
+            <p class="light">챗봇 인터페이스를 통해 유저와 실시간으로 상호작용합니다. 유저는 추천에 대한 명시적인 피드백을 줄 수도 있지만 암묵적인 피드백을 주더라도 BOT은 이를 학습에 반영합니다.  </p>
+          </div>
         </div>
-        <div class="col-md-3 col-xs-0"></div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><span class="glyphicon glyphicon-signal"></span></h2>
+            <h5 class="center">Adaptive learning</h5>
+
+            <p class="light">유저와 많은 상호작용을 할수록 더욱 정교해집니다. 유저의 피드백을 통해 학습 알고리즘을 지속적으로 개선하고 유저의 입맛을 학습합니다. 또한 과적합을 막기 위한 여러 장치가 작동중입니다. 유저의 취향 변화에도 적응적으로 학습할 수 있습니다. </p>
+          </div>
         </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center brown-text"><span class="glyphicon glyphicon-user"></span></h2>
+            <h5 class="center">Personalize</h5>
+
+            <p class="light">최종적으로 유저의 입맛(취향), 영양섭취, 패턴 등 여러 정보를 학습하여 추천 결과에 반영합니다.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+
+
+
 
 <script>
     $(document).ready(function(){
       $('.parallax').parallax();
     });
     
+    $('.chips').material_chip();
 </script>
 
 {% endblock %}

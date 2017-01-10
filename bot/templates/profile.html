@@ -26,19 +26,19 @@ IRECIPE-User profile
             <h3>추천 내역</h3>
             <ul class="collapsible" data-collapsible="accordion">
                       <li>
-                        <div class="collapsible-header"><span class="badge">10</span><i class="material-icons">filter_drama</i>만족</div>
+                        <div class="collapsible-header"><h5><span class="glyphicon glyphicon-thumbs-up"></span>만족</h5></div>
                         {% for positive in positives %}
                         <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{positive.recipe.get_absolute_url}}">{{positive.recipe}}</a></p></div>
                         {% endfor %}
                       </li>
                       <li>
-                        <div class="collapsible-header"><span class="badge">10</span><i class="material-icons">place</i>불만족</div>
+                        <div class="collapsible-header"><h5><span class="glyphicon glyphicon-thumbs-down"></span>불만족</h5></div>
                         {% for negative in negatives %}
                         <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{negative.recipe.get_absolute_url}}">{{negative.recipe}}</a></p></div>
                         {% endfor %}
                       </li>
                       <li>
-                        <div class="collapsible-header"><span class="new badge" data-badge-caption="need feedback">{{lennone}}</span><i class="material-icons">filter_drama</i>피드백해주세요!</div>
+                        <div class="collapsible-header"><span class="new badge" data-badge-caption="need feedback">{{lennone}}</span><h5><span class="glyphicon glyphicon-remove-circle"></span>피드백해주세요!</h5></div>
                         {% for nones in noness %}
                         <div class="collapsible-body"><p><a style="color:#00bfa5;" href="{{nones.recipe.get_absolute_url}}">{{nones.recipe}}</a></p>
                         
@@ -53,6 +53,12 @@ IRECIPE-User profile
         <div class="col-md-2 col-xs-12"></div>    
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+    $('.collapsible').collapsible();
+  });
+    
+</script>
 <script src="/static/js/index.js"></script>
 
 {% endblock %}

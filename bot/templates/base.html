@@ -5,7 +5,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}{% endblock %}</title>
-      <!-- 부트스트랩 -->
+    <link rel="shorcut icon" type ="image/x-icon" href="/static/res/boaz.png">
+   <!-- 부트스트랩 -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="/static/css/normalize.css">
@@ -19,21 +20,42 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
 		
+		
 	</head>
 
 	<body onload="init()" id="page_body">
-	   <nav class="navbar-fixed">
-      <div class="nav-wrapper white">
-        <a href="/" class="brand-logo center waves-effect waves-block" style="color:black">IRECIPE</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+	   <nav class="navbar-fixed white" role="navigation">
+      <div class="nav-wrapper white container">
+        
+        <a href="/" class="brand-logo center waves-effect waves-block" style="color:black;text-decoration:none">IRECIPE<img style="width:40px;height:auto;margin-bottom:10px;"src="/static/res/bot.png"/></a>
+        <ul  class="right hide-on-med-and-down">
           {% if user.is_authenticated %} <!-- 로그인되어있는 경우에만 로그아웃 버튼 누를 수 있도록~ -->
-                <li class="waves-effect waves-block waves-green"><a style="color:black" href="/profile/">{{cuser}}</a></li>
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="/profile/">{{cuser}}</a></li>
               <!--  <li class="waves-effect waves-block waves-red"><a style="color:black" href="/chat/">챗봇</a></li>-->
-                <li class="waves-effect waves-block waves-green"><a style="color:black" href="/accounts/logout">로그아웃</a></li>
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="/accounts/logout">로그아웃</a></li>
+          {% else %}
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="{% url 'loginForm' %}">로그인</a></li>
           {% endif %}
+         
         </ul>
+        
+        <ul id="nav-mobile" class="side-nav">
+          
+        {% if user.is_authenticated %} <!-- 로그인되어있는 경우에만 로그아웃 버튼 누를 수 있도록~ -->
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="/profile/">{{cuser}}</a></li>
+              <!--  <li class="waves-effect waves-block waves-red"><a style="color:black" href="/chat/">챗봇</a></li>-->
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="/accounts/logout">로그아웃</a></li>
+          {% else %}
+                <li class="waves-effect waves-block waves-green"><a style="color:black;text-decoration:none" href="{% url 'loginForm' %}">로그인</a></li>
+          {% endif %}
+      </ul>
+     <a href="#" data-activates="nav-mobile" class="button-collapse"><span style="color:black;" class="glyphicon glyphicon-menu-hamburger"></span></a>
       </div>
   </nav>
+  
+  <script>
+      $(".button-collapse").sideNav();
+  </script>
 
 	   
     {% block content %}{% endblock %}
@@ -44,21 +66,22 @@
               <div class="col l6 s12">
                 <h5 class="white-text">IRECIPE</h5>
                 <p class="grey-text text-lighten-4">당신의 취향을 저격할 레시피</p>
+                <img src="/static/res/boaz.png" style="width:70px;height:auto;" />
               </div>
               <div class="col l4 offset-l2 s12">
                 <h5 class="white-text">Links</h5>
                 <ul>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-                  <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+                  <li><a class="grey-text text-lighten-3" style="text-decoration:none" href="https://github.com/DSKSD">만든이</a></li>
+                  <li><a class="grey-text text-lighten-3" style="text-decoration:none" href="http://boazbigdata.com/">BOAZ 블로그</a></li>
+                  <li><a class="grey-text text-lighten-3" style="text-decoration:none" href="https://github.com/DSKSD">코드</a></li>
+                  <li><a class="grey-text text-lighten-3" style="text-decoration:none" href="#!">발표자료</a></li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="footer-copyright">
             <div class="container">
-            © 2016 Copyright BOAZ
+            © 2016 Copyright DSKSD
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
           </div>

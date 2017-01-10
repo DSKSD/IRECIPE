@@ -9,7 +9,7 @@ import json
 import numpy
 from .irecipebot_utils import *
 from .irecipe import *
-from .models import Recipe, RecomLog, Userinfo
+from .models import Recipe, RecomLog, Userinfo, Dialog
 # Create your views here.
 
 # 회원가입 및 로그인 구현 부분 
@@ -65,23 +65,48 @@ def userInform(request):
     thisUser.user = request.user
     thisUser.name = request.POST['name']
     thisUser.hate = request.POST['hate']
+    mytaste=0
+    mytexture=0
+    mynation=0
     
     if 'diet' in request.POST.keys():
         thisUser.diet = True # 체크박스로 국가별 초기화값 넣는 코드 필요
     
     if 'taste' in request.POST.keys():
-        print(request.POST['taste']) # 나중에는 그 입맛대로 초기화..!
         mytaste = int(request.POST['taste'])
-        if mytaste == 1:
-            print("맵맵!")
-            model = pickle.load(open('./bot/model/userspicy.p', 'rb'))
-        else:
-            print("랜덤")
-            model = {}
-            model['W1'] = np.random.randn(H,D) / np.sqrt(D) # "Xavier" initialization
-            model['b1'] = np.random.randn(H) / np.sqrt(1)
-            model['W2'] = np.random.randn(H) / np.sqrt(H)
-            model['b2'] = np.random.randn(1) / np.sqrt(1)
+        
+    if 'texture' in request.POST.keys():
+        mytexture = int(request.POST['texture'])
+    
+    if 'nation' in request.POST.keys():
+        mynation = int(request.POST['nation'])
+        
+    if mytaste == 1 and mytexture==1 and mynation==1:
+        model = pickle.load(open('./bot/model/model111.p', 'rb'))
+        thisUser.mclass = 111
+        
+    elif mytaste == 1 and mytexture==2 and mynation==1:
+        model = pickle.load(open('./bot/model/model121.p', 'rb'))
+        thisUser.mclass = 121
+        
+    elif mytaste == 2 and mytexture==1 and mynation==1:
+        model = pickle.load(open('./bot/model/model211.p', 'rb'))
+        thisUser.mclass = 211
+        
+    elif mytaste == 2 and mytexture==2 and mynation==1:
+        model = pickle.load(open('./bot/model/model221.p', 'rb'))
+        thisUser.mclass = 221
+        
+    elif mytaste == 1 and mytexture==1 and mynation==2:
+        model = pickle.load(open('./bot/model/model112.p', 'rb'))
+        thisUser.mclass = 112
+        
+    else:
+        model = {}
+        model['W1'] = np.random.randn(H,D) / np.sqrt(D) # "Xavier" initialization
+        model['W2'] = np.random.randn(H) / np.sqrt(H)
+        thisUser.mclass = 000
+
     
     thisUser.setPrefer(model)
     thisUser.save()
@@ -94,6 +119,10 @@ def reply(request):
     intent = 1
     userSay = request.POST['msg']
     cuser = get_object_or_404(Userinfo, user=request.user)
+    dialog = Dialog()
+    dialog.user = request.user
+    dialog.sent = userSay
+    dialog.save()
     context={}
     ### 나중에는 post에서 user의 pk를 찾아서 사용해야겠지??
     
@@ -113,7 +142,6 @@ def reply(request):
         reply = "가지고 계신 요리 재료나 음식명을 알려주시면 찾아볼게요! 아니면 레시피의 특징을 말씀해주세요. ex) 피크닉, 집들이, 분위기 ..."
     
     elif intent == 4:
-        print("랜덤!!")
         reply, ipk, lpk = Recommendation(cuser, 'RANDOM', userSay)
         # 작정하고 랜덤 서치..
         imageFile = '/static/images/recipe' + str(ipk) + '.png'
@@ -125,6 +153,56 @@ def reply(request):
             
         if lpk != 0:
             context['logPK'] = lpk
+            
+    elif intent == 5: # substitue (이거 말고 다른거 없어? 등)
+        # 다만 새우 말고 그거 ? 일케 들어오면 틀릴 수도....
+        
+        hate = "hate "
+        
+        if len(checkIng) != 0 and eastList[1] != 0:
+            
+            # 그거 말고 새우
+            userSay = checkIng[0] # userSay에 담아서 넘긴다.
+            
+            hateCandits = RecomLog.objects.filter(user=cuser.user).order_by('-pk')[0]
+            hatec = hateCandits.recipe
+            print(hatec)
+            hate+=str(hatec.primary)
+            
+        
+        elif len(checkIng) != 0:
+            # 새우 말고 삼겹살
+            
+            hate+=str(checkIng[0])
+            userSay = checkIng[-1]            
+            #for i in checkIng:
+            #    hate+=str(i)
+            #    hate+=" "
+                
+        elif eastList[1] != 0:
+            # 그거 말고 
+            hateCandits = RecomLog.objects.filter(user=cuser.user).order_by('-pk')[0]
+            hatec = hateCandits.recipe
+            print(hatec)
+            hate+=str(hatec.primary)
+            
+            
+        reply, ipk, lpk = Recommendation(cuser, hate, userSay)
+        
+        reply = reply[:-6]
+        reply += " 그럼... 이건 어때요?!"
+        
+        imageFile = '/static/images/recipe' + str(ipk) + '.png'
+        
+        if ipk != 0:
+            context['image'] = imageFile
+            context['recipePK'] = ipk
+            
+        if lpk != 0:
+            context['logPK'] = lpk
+        
+        if ipk == 0:
+            reply = "으..모르겠어요ㅠㅠ"
         
     elif intent == 0:
         

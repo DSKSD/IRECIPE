@@ -7,11 +7,11 @@ IRECIPE-User information
 {% block content %}
 <div class = "container"  style="margin-top: 100px;">
     <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-8">
+      <div class="col s12 m3"></div>
+      <div class="col s12 m6">
          <div class="well well-lg">
             <div class="center">
-             <h2>추가 정보 입력</h2>  
+             <h2>추가 정보</h2>  
             </div>
             
             <form style="margin-top: 50px;" action="{% url 'userinform' %}" method="POST">{% csrf_token %}
@@ -35,14 +35,28 @@ IRECIPE-User information
               <select name="taste">
                 <option value="" disabled selected>태그를 선택해주세요</option>
                 <option value="1">매콤한</option>
-                <option value="2">달달한</option>
-                <option value="3">짭짤한</option>
-                <option value="4">새콤한</option>
-                <option value="5">고소한</option>
+                <option value="2">달콤한</option>
               </select>
               <label>Taste 태그</label>
             </div>
-
+            
+            <div style ="margin-top:20px;" class="input-field col s12">
+              <select name="texture">
+                <option value="" disabled selected>태그를 선택해주세요</option>
+                <option value="1">육식주의</option>
+                <option value="2">면성애자</option>
+              </select>
+              <label>Texture 태그</label>
+            </div>
+            
+            <div style ="margin-top:20px;" class="input-field col s12">
+              <select name="nation">
+                <option value="" disabled selected>태그를 선택해주세요</option>
+                <option value="1">한식</option>
+                <option value="2">양식</option>
+              </select>
+              <label>Nation 태그</label>
+            </div>
             
             
               <button style=";" type="submit" class="btn btn-success teal accent-4">채팅시작</button>
@@ -50,7 +64,7 @@ IRECIPE-User information
             
       </div>
       </div>
-      <div class="col-md-2"></div>
+      <div class="col s12 m3"></div>
     </div>
 </div>
 

@@ -23,8 +23,19 @@ body {
 }
 
 a {
-    text-decoration: none;
+    text-decoration: none; 
 }
+
+
+/* Custom Stylesheet */
+/**
+ * Use this file to override Materialize files so you can update
+ * the core Materialize files in the future
+ *
+ * Made By MaterializeCSS.com
+ */
+
+
 
 
 .footer {
@@ -62,11 +73,8 @@ a {
   top: 0;
   left: 0;
   z-index: 1;
-  background: url("/static/res/bg1.jpg") no-repeat 0 0;
-  -webkit-filter: blur(80px);
-          filter: blur(80px);
-  -webkit-transform: scale(1.2);
-          transform: scale(1.2);
+  background: url("/static/res/bg4.jpg") no-repeat 0 0; 
+  
 }
 
 /*--------------------
@@ -83,8 +91,8 @@ Chat
   max-height: 500px;
   z-index: 2;
   overflow: hidden;
-  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 20px;
   display: -webkit-box;
   display: -webkit-flex;
