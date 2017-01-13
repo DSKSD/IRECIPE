@@ -12,7 +12,7 @@ IRECIPE - Login
         <div class="col s12 m4">
             <div class="well">
               <div class="center">
-                <h2>Welcome to IRECIPE!</h2>
+                <h2>로그인</h2>
                 <form style="margin-top: 50px;" action="{% url 'login' %}" method="post" id="login-form">{% csrf_token %}
                   {% if form.errors %}
                     <p>Your ID or Password were not entered correctly. Please try again.</p>

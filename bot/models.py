@@ -6,7 +6,8 @@ from django.utils import timezone
 # Create your models here.
 
 class Userinfo(models.Model):
-    user = models.ForeignKey('auth.User')
+    user = models.OneToOneField('auth.User',on_delete=models.CASCADE,primary_key=True)
+   # user = models.ForeignKey('auth.User',unique=True)
     name = models.CharField(max_length=200)
     prefer = models.BinaryField(null=True)
     diet = models.BooleanField(default=False)
@@ -37,6 +38,8 @@ class Recipe(models.Model):
     vector = models.BinaryField(null=True)
     imagepath = models.CharField(max_length=300, null=True)
     similars = models.BinaryField(null=True)
+    ingchecker = models.CharField(max_length=300,null=True)
+    tagchecker = models.CharField(max_length=300,null=True)
     
     def __str__(self):
         return self.name

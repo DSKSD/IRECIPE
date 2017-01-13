@@ -88,15 +88,27 @@ def userInform(request):
     elif mytaste == 1 and mytexture==2 and mynation==1:
         model = pickle.load(open('./bot/model/model121.p', 'rb'))
         thisUser.mclass = 121
+    
+    elif mytaste == 1 and mytexture==2 and mynation==2:
+        model = pickle.load(open('./bot/model/model122.p', 'rb'))
+        thisUser.mclass = 122
         
     elif mytaste == 2 and mytexture==1 and mynation==1:
         model = pickle.load(open('./bot/model/model211.p', 'rb'))
         thisUser.mclass = 211
         
+    elif mytaste == 2 and mytexture==1 and mynation==2:
+        model = pickle.load(open('./bot/model/model212.p', 'rb'))
+        thisUser.mclass = 212
+        
     elif mytaste == 2 and mytexture==2 and mynation==1:
         model = pickle.load(open('./bot/model/model221.p', 'rb'))
         thisUser.mclass = 221
-        
+    
+    elif mytaste == 2 and mytexture==2 and mynation==2:
+        model = pickle.load(open('./bot/model/model222.p', 'rb'))
+        thisUser.mclass = 222
+    
     elif mytaste == 1 and mytexture==1 and mynation==2:
         model = pickle.load(open('./bot/model/model112.p', 'rb'))
         thisUser.mclass = 112
@@ -203,6 +215,22 @@ def reply(request):
         
         if ipk == 0:
             reply = "으..모르겠어요ㅠㅠ"
+            
+    elif intent == 6:
+        userSay = ' '.join(checkIng)
+        reply, ipk, lpk = Recommendation(cuser, 'SPECIAL', userSay)
+        
+        imageFile = '/static/images/recipe' + str(ipk) + '.png'
+        
+        
+        if ipk != 0:
+            context['image'] = imageFile
+            context['recipePK'] = ipk
+            
+        if lpk != 0:
+            context['logPK'] = lpk
+    
+        
         
     elif intent == 0:
         
@@ -217,6 +245,7 @@ def reply(request):
             lpk = 0
         
         elif len(checkIng) == 0:
+       
             reply, ipk, lpk = Recommendation(cuser, 'query', userSay) # 재료 없으니 걍 랜덤 서치
         else:
             reply, ipk, lpk = Recommendation(cuser, checkIng, userSay)

@@ -4,14 +4,11 @@ import pickle
 import numpy as np
 import random
 import re
+import konlpy
 from .models import Recipe, Userinfo, RecomLog
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
-# f = open("./bot/data/recipe10000_complete.txt", 'rb')
 
-
-# f = open("./bot/data/recipe_vec.txt", 'rb')
-# recipe_vector = pickle.load(f)
 
 f = open("./bot/data/exceptRecipe.txt", 'rb')
 exceptRecipe = pickle.load(f)
@@ -19,8 +16,6 @@ exceptRecipe = pickle.load(f)
 f = open("./bot/data/ingdict.txt", 'rb')
 ingredient = pickle.load(f)
 
-# f = open("./bot/data/recom_log.txt", 'rb')
-# recom_log = pickle.load(f)
 
 # hyperparameters
 H = 400 # number of hidden layer neurons
@@ -29,15 +24,7 @@ learning_rate = 1e-4
 # gamma = 0.99 # discount factor for reward
 # decay_rate = 0.99 # decay factor for RMSProp leaky sum of grad^2
 
-# class User(object):
-    
-#     def __init__(self,name,diet=False,hate=[]):
-#         self.name = name
-#         self.diet = diet
-#         self.hate = hate
-        
-#     def __str__(self):
-#         return self.name
+
         
 
 def Search(ingList, user,userSay="",rfilter=None):
@@ -47,21 +34,34 @@ def Search(ingList, user,userSay="",rfilter=None):
     
     hate = []
     
-    if ',' in user.hate:
-        hate = user.hate.split(',')
-    else:
-        hate = [user.hate]
     
+    hate  = konlpy.tag.Mecab().morphs(user.hate)
     
+
     if type(ingList) != list:
         
         if ingList == "RANDOM": # 작정한 랜덤?
             for _ in range(1000):
                 result.append(random.choice(range(1,11607)))
                 
-
+        
+        elif ingList == "SPECIAL":
+            token = userSay.split(' ')
+            specialt = token.pop(0)
+            print(token)
+            
+            if len(token)>0:
+                raning = random.choice(token)
+                objects = Recipe.objects.filter((Q(name__icontains=specialt) | Q(tag__icontains=specialt)) & (Q(name__icontains=raning) | Q(tag__icontains=raning)))
+            
+            else:
+                objects = Recipe.objects.filter(Q(name__icontains=specialt) | Q(tag__icontains=specialt))
+            
+            for x in range(len(objects)):
+                result.append(objects[x].pk)
+        
         else:
-            objects = Recipe.objects.filter(Q(name__icontains=ingList) | Q(primary__icontains=ingList) | Q(sub__icontains=ingList) | Q(text__icontains=ingList))
+            objects = Recipe.objects.filter(Q(name__icontains=ingList) | Q(tag__icontains=ingList))
             
             for x in range(len(objects)):
                 result.append(objects[x].pk)
@@ -72,7 +72,6 @@ def Search(ingList, user,userSay="",rfilter=None):
 
 
     else: # 재료 리스트로 인풋 들어올 때 처리 
-    
         if ingList[0] == "SUBSTITUE": # 그거 말고 다른거 등..
             
             for r in rfilter:
@@ -86,29 +85,36 @@ def Search(ingList, user,userSay="",rfilter=None):
             else:
                 ingList = [randing]
             
-            print(ingList)
-            print(hate)
         
         number = len(ingList)
         recipe = Recipe.objects.all()
         for i in range(len(recipe)):
            # recomR = recipe[i].pk
             matching = 0.0
+            prcheck = False
             for ingdex in range(number):
               #  if recomR == 'default': continue
-                forfilter = recipe[i].primary
-                forfilter = forfilter.split(' ') # 재료로 검색할 시 ㄹㅇ메인 재료만 걸르도록..
-                comparePrimary = ""
-                if ingdex == 0 and len(forfilter) >= 5:
-                    for xx in forfilter[:5]:
-                        comparePrimary+=xx
-                else:
-                    for xx in forfilter:
-                        comparePrimary+=xx
+                forfilter = recipe[i].ingchecker
+                forfilter = forfilter.split(' ')
+                # forfilter = recipe[i].primary
+                # forfilter  = konlpy.tag.Mecab().morphs(forfilter)
+                # forfilter = [i for i in forfilter if i in ingredient]
                 
-                temp = re.search(ingList[ingdex],comparePrimary)
-                if temp != None: matching+=1
-            
+                if ingdex == 0 and len(forfilter) >= 2:
+                    forfilter = forfilter[:2]
+                
+                if ingdex==0 and ingList[ingdex] not in forfilter:
+                     #   print(ingList)
+                        prcheck = True
+                    
+                for c in forfilter:
+                    
+                    if c == ingList[ingdex]:
+                        matching+=1
+                
+                # temp = re.search(ingList[ingdex],comparePrimary)
+                # if temp != None: matching+=1
+            if prcheck == True: continue
             
             if matching == 0.0: continue
                 
@@ -117,8 +123,9 @@ def Search(ingList, user,userSay="",rfilter=None):
             matching = float(matching)/float(number)
             
             if matching > 0.6:
-
-                    
+                
+                # print(recipe[i].ingchecker)
+                # print(matching)    
                 if len(hate)!=0: # 싫어하는 음식 필터링
                     for check in hate:
                         hateCheck1 = re.search(check, recipe[i].primary)

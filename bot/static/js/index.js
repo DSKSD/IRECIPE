@@ -105,10 +105,10 @@ $(document).on('click','.see-detail', function(){
 	  csrfmiddlewaretoken: csrftoken,
 	}).done(function(reply) {
   	  //history.pushState(null,null,event.target.href);
-    var $toastContent = $('<div><span class ="glyphicon glyphicon-remove toast-out" style="float: right" aria-hidden="true"></span><h5>' + reply['rTitle'] + '</h5><p>주재료: ' + reply['rPrimary'] + '</p><p>부재료: ' + reply['rSub'] + '</p><p>'+ reply['rText'] + '</p><p>당신이 좋아 할 확률 : '+ reply['aprob'] + '</p></div>');
+    var $toastContent = $('<div><span class ="glyphicon glyphicon-remove toast-out" style="float: right" aria-hidden="true"></span><h5>' + reply['rTitle'] + '</h5><p>주재료: ' + reply['rPrimary'] + '</p><p>부재료: ' + reply['rSub'] + '</p><p>'+ reply['rText'] + '</p></div>');
     Materialize.toast($toastContent, 50000);
     event.preventDefault();
-
+      // <p>당신이 좋아 할 확률 : '+ reply['aprob'] + '</p>
   	
 	}).fail(function() {
 	  alert('error calling function');
