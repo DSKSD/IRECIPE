@@ -84,6 +84,7 @@ class Dialog(models.Model):
     user = models.ForeignKey('auth.User')
     sent = models.TextField(null=False)
     created_date = models.DateTimeField(default=timezone.now)
+    recom = models.OneToOneField(RecomLog,on_delete=models.CASCADE,null=True)
     
     def __str__(self):
         return self.user

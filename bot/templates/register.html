@@ -15,9 +15,7 @@ IRECIPE-Register
                <h2><img style="width:50px;height:auto;margin-bottom:10px;"src="/static/res/bot.png"/>Welcome</h2>
             
            <form  style="margin-top: 50px;" action="/accounts/register/" method="POST">{% csrf_token %}
-            {% if form.errors %}
-                <p>Please try again.</p>
-            {% endif %}
+            
                 <div class="input-field">
                   <label for="id_username">유저아이디</label> 
                   <input id="id_username" type="text" name="username" placeholder="아이디를 입력하세요." class="validate" required />
@@ -30,6 +28,9 @@ IRECIPE-Register
                     <label for="id_password2">패스워드 확인</label>
                     <input type="password" name="password2" id="id_password2" placeholder="패스워드를 재확인 해주세요." class="validate" required />
                 </div>
+                {% if form.errors %}
+                    <p>비밀번호가 짧거나..(8자 이상) 아이디가 중복됩니다!</p>
+                {% endif %}
                  <button style=";" type="submit" class="btn btn-success teal accent-4">제출</button>
            </form>
            </div>

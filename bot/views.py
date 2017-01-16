@@ -33,9 +33,12 @@ def index(request):
 
 @login_required
 def chat(request):
-    cuser = get_object_or_404(Userinfo, user=request.user)
-    ## 유저 추가 정보 입력하다가 클릭하면 뒤로 돌아가달라고 말하는 페이지 띄우기 
-    return render(request, 'chat.html', {'cuser' : cuser.name})
+    try:
+        cuser = Userinfo.objects.get(user=request.user)
+        ## 유저 추가 정보 입력하다가 클릭하면 뒤로 돌아가달라고 말하는 페이지 띄우기 
+        return render(request, 'chat.html', {'cuser' : cuser.name})
+    except:
+        return render(request, 'userinfo.html')
 
 
 def register(request):
@@ -134,7 +137,7 @@ def reply(request):
     dialog = Dialog()
     dialog.user = request.user
     dialog.sent = userSay
-    dialog.save()
+  
     context={}
     ### 나중에는 post에서 user의 pk를 찾아서 사용해야겠지??
     
@@ -165,6 +168,8 @@ def reply(request):
             
         if lpk != 0:
             context['logPK'] = lpk
+            thisRecom = RecomLog.objects.get(pk=lpk)
+            dialog.recom = thisRecom
             
     elif intent == 5: # substitue (이거 말고 다른거 없어? 등)
         # 다만 새우 말고 그거 ? 일케 들어오면 틀릴 수도....
@@ -212,7 +217,9 @@ def reply(request):
             
         if lpk != 0:
             context['logPK'] = lpk
-        
+            thisRecom = RecomLog.objects.get(pk=lpk)
+            dialog.recom = thisRecom
+       
         if ipk == 0:
             reply = "으..모르겠어요ㅠㅠ"
             
@@ -229,9 +236,14 @@ def reply(request):
             
         if lpk != 0:
             context['logPK'] = lpk
+            thisRecom = RecomLog.objects.get(pk=lpk)
+            dialog.recom = thisRecom
+          
     
+    elif intent == 10:
         
-        
+        reply ="안녕히가세요! 또 이용해 주세요:)"
+    
     elif intent == 0:
         
         if eastList[1] != 0: # 특정 요리재료에 대한 부정적 표현
@@ -259,11 +271,15 @@ def reply(request):
             
         if lpk != 0:
             context['logPK'] = lpk
+            thisRecom = RecomLog.objects.get(pk=lpk)
+            dialog.recom = thisRecom
     
     ### 나중엔 reply 안에는 recipePK, logPK가 들어가게 될 것이고... (text)가 아니라
     ### 카드 형태의 인풋으로 준다!! (이미지, 이름, 재료, 만족/불만족 버튼, 이와 유사한 음식 리스트)
     ### 버튼을 누르면 피드백 함수 적용!
     
+    
+    dialog.save()
     context['text'] = reply
     
     return JsonResponse(context)

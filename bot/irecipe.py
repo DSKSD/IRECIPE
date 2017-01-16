@@ -187,7 +187,7 @@ def backward(x,hidden,loss,model):
 
 def Prediction(user, rid,getProb=False):
     """유저의 pk와 레시피 pk를 입력받는다."""
-    # db를 뒤져서 이미 그 유저의 모델이 존재하면 그 모델을 불러온다.
+    # user의 scoring Network model 
     model = user.getPrefer()
     
     # db에서 그 pk에 맞는 레시피 벡터를 불러온다 (100차원)
