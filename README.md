@@ -1,5 +1,7 @@
 # IRECIPE BOT
 
+<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs2.png"/>
+
 # Introduction
 
 
@@ -13,6 +15,9 @@
 `Predict user's preference using Neural Network`
 
 `User Interface using Rule based ChatBot`
+
+
+<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs3.png"/>
 
 
 위 모듈을 가진 머신러닝 어플리케이션입니다.
@@ -35,14 +40,15 @@ http://www.slideshare.net/KimSungdong1/irecipe
 
 # Screenshot
 
-<img src="https://github.com/DSKSD/IRECIPE/tree/master/screenshot/scs1.png"/>
+<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs1.png"/>
 
-<img src="https://github.com/DSKSD/IRECIPE/tree/master/screenshot/scs4.png"/>
+<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs4.png"/>
 
-
-<a href="https://github.com/DSKSD/">@DSKSD</a>
 
 
 # Online Demo
 
 준비 중...
+
+
+<a href="https://github.com/DSKSD/">@DSKSD</a>
