@@ -1,6 +1,5 @@
 # IRECIPE BOT
 
-<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs2.png"/>
 
 # Introduction
 
@@ -40,9 +39,9 @@ http://www.slideshare.net/KimSungdong1/irecipe
 
 # Screenshot
 
-<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs1.png"/>
+<img style="max-width:200px;" src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs1.png"/>
 
-<img src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs4.png"/>
+<img style="max-width:200px;" src="https://github.com/DSKSD/IRECIPE/blob/master/screenshot/scs4.png"/>
 
 
 
