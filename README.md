@@ -2,27 +2,47 @@
 
 # Introduction
 
-<hr>
 
-가지고 있는 재료만 알려주시면 당신 입맛에 딱 맞는 레시피를 추천해드려요!
+당신 입맛에 딱 맞는 레시피를 추천해드려요!
 
-이 프로젝트는
+봇 인터페이스를 통해 자연어로 상호작용하며
+사용자의 입맛을 학습하고 레시피를 추천합니다.
 
 `Feature Extration using Ingredient2Vec(Word2Vec)`
 
 `Predict user's preference using Neural Network`
 
-`User Interface with BOT`
+`User Interface using Rule based ChatBot`
 
 
 위 모듈을 가진 머신러닝 어플리케이션입니다.
 
 # Reference
 
-[Word2Vec] https://arxiv.org/pdf/1301.3781.pdf
+[Paper] <a href="https://static.googleusercontent.com/media/research.google.com/ko//pubs/archive/45530.pdf">Deep Neural Networks for YouTube Recommendations, Paul Covington et al, 2016</a>
 
-[Konlpy, Gensim] https://www.lucypark.kr/slides/2015-pyconkr/#1
+[Paper] <a href="https://arxiv.org/abs/1606.07792">Wide & Deep Learning for Recommender Systems, Heng-Tze Cheng et al., 2016</a>
 
-# In progress
+[Paper] <a href="https://arxiv.org/pdf/1301.3781.pdf">Efficient Estimation of Word Representations in Vector Space, Tomas Mikolov el at., 2013</a>
 
-http://nbviewer.jupyter.org/github/dsksd/IRECIPE/tree/master/reference/nlp/
+[Code_Interface] <a href="http://suriyadeepan.github.io/2016-06-28-easy-seq2seq/">Chatbots with Seq2Seq, Suriyadeepan Ram, 2016</a>
+
+[Code_NLP] <a href="https://www.lucypark.kr/slides/2015-pyconkr/#1">한국어와 NLTK, Gensim의 만남, 박은정, 2015</a>
+
+# PPT Slide
+
+http://www.slideshare.net/KimSungdong1/irecipe
+
+# Screenshot
+
+<img src="https://github.com/DSKSD/IRECIPE/tree/master/screenshot/scs1.png"/>
+
+<img src="https://github.com/DSKSD/IRECIPE/tree/master/screenshot/scs4.png"/>
+
+
+<a href="https://github.com/DSKSD/">@DSKSD</a>
+
+
+# Online Demo
+
+준비 중...
